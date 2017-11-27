@@ -40,6 +40,6 @@ $ node-modules-clean --file "a.js | b.js"
 ## Parameter
 | command | effect |
 | ---     | ---    |
-| --path(-p) | Select a folder directory.                                                 |
-| --ext(-e)  | Add the extension files you need to remove the parameter "|" segmentation. |
-| --file(-f) | Add the need to remove the file name, "|" segmentation parameters.         |
+| --path(-p) | Select a folder directory.                                                      |
+| --ext(-e)  | Add the extension files you need to remove the parameter "&#124;" segmentation. |
+| --file(-f) | Add the need to remove the file name, "&#124;" segmentation parameters.         |
