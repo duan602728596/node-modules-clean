@@ -1,0 +1,39 @@
+{
+  "name": "node-modules-clean",
+  "version": "0.0.1-alpha.1",
+  "description": "清除node_modules文件夹内的冗余文件。",
+  "bin": "./lib/index.js",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "npm run cleanlib && cross-env NODE_ENV=development ./node_modules/.bin/gulp",
+    "build": "npm run cleanlib && cross-env NODE_ENV=production ./node_modules/.bin/gulp",
+    "cleanlib": "./node_modules/.bin/rimraf lib"
+  },
+  "author": {
+    "name": "段昊辰",
+    "email": "duanhaochen@126.com",
+    "url": "https://github.com/duan602728596"
+  },
+  "homepage": "https://github.com/duan602728596/node-modules-clean",
+  "bugs": {
+    "url" : "https://github.com/duan602728596/node-modules-clean/issues",
+    "email" : "duanhaochen@126.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.32",
+    "@babel/preset-env": "^7.0.0-beta.32",
+    "@babel/preset-flow": "^7.0.0-beta.32",
+    "cross-env": "^5.1.1",
+    "gulp": "gulpjs/gulp#4.0",
+    "gulp-babel": "^8.0.0-beta.0",
+    "gulp-changed": "^3.1.1",
+    "gulp-notify": "^3.0.0",
+    "gulp-plumber": "^1.1.0",
+    "rimraf": "^2.6.2"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0-beta.32",
+    "yargs": "^10.0.3"
+  }
+}
