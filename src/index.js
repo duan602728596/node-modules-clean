@@ -4,7 +4,7 @@ const path = require('path');
 const yargs = require('yargs');
 const clean = require('./clean');
 
-// 获取参数
+/* 获取参数 */
 const argv: Object = yargs.options({
   path: {
     alias: 'p',
@@ -31,15 +31,17 @@ let filePath: string = null;
 let extArray: ?string[] = null;
 let fileArray: ?string[] = null;
 
-/* 将字符串转化成数组并剔除空字符串 */
+/* 将字符串转化成数组、剔除空字符串、全部转换成小写 */
 function string2Array(str: string): string[]{
   const str2: string[] = str.split(/\s*\|\s*/g);
+  const arr: string[] = [];
   for(let i: number = str2.length - 1; i >= 0; i--){
-    if(/^\s*$/.test(str2[i])){
-      str2.splice(i, 1);
+    const item: string = str2[i];
+    if(!/^\s*$/.test(item)){
+      arr.push(item.toLocaleLowerCase());
     }
   }
-  return str2;
+  return arr;
 }
 
 // 文件夹路径;
