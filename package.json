@@ -1,7 +1,7 @@
 {
   "name": "node-modules-clean",
-  "version": "0.0.1-alpha.1",
-  "description": "清除node_modules文件夹内的冗余文件。",
+  "version": "0.0.1-alpha.2",
+  "description": "Clear redundant files in the node_modules folder. (清除node_modules文件夹内的冗余文件。)",
   "bin": "./lib/index.js",
   "main": "lib/index.js",
   "scripts": {
