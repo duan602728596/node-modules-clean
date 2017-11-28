@@ -35,24 +35,27 @@ function isFile(filePath: string): Promise{
   });
 }
 
+// 删除
+function goToDelete(filePath: string, fileInfor: Object): void{
+  fs.unlink(filePath, (err: Error): void=>{
+    if(err){
+      console.error(err);
+    }else{
+      console.log('DELETE: ' + fileInfor.dir + '\\' + fileInfor.base);
+    }
+  });
+}
+
 // 清除文件
 function deleteFile(filePath: string): void{
   const fileInfor: Object = path.parse(filePath);
   const ext = fileInfor.ext.toLocaleLowerCase();
   const base = fileInfor.base.toLocaleLowerCase();
-  let mustDelete: boolean = false;
 
-  if(extArray.includes(ext)) mustDelete = true;
-  if(fileArray.includes(base)) mustDelete = true;
-
-  if(mustDelete){
-    fs.unlink(filePath, (err: Error): void=>{
-      if(err){
-        console.error(err);
-      }else{
-        console.log('DELETE: ' + fileInfor.dir + '\\' + fileInfor.base);
-      }
-    });
+  if(extArray.includes(ext)){          // 根据扩展名匹配
+    goToDelete(filePath, fileInfor)
+  }else if(fileArray.includes(base)){  // 根据文件名匹配
+    goToDelete(filePath, fileInfor);
   }
 }
 
