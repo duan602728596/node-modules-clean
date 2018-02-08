@@ -5,7 +5,7 @@ const retain = require('./retain');
 let extArray: string[] = retain.ext;
 let fileArray: string[] = retain.file;
 
-// 列举文件夹内的文件
+/* 列举文件夹内的文件 */
 function fileList(filePath: string): Promise{
   return new Promise((resolve: Function, reject: Function): void=>{
     fs.readdir(filePath, (err: Error, files: string[]): void=>{
@@ -20,7 +20,7 @@ function fileList(filePath: string): Promise{
   });
 }
 
-// 判断是文件还是文件夹
+/* 判断是文件还是文件夹 */
 function isFile(filePath: string): Promise{
   return new Promise((resolve: Function, reject: Function): void=>{
     fs.stat(filePath, (err: Error, stats: any)=>{
@@ -35,7 +35,7 @@ function isFile(filePath: string): Promise{
   });
 }
 
-// 删除
+/* 删除 */
 function goToDelete(filePath: string, fileInfor: Object): void{
   fs.unlink(filePath, (err: Error): void=>{
     if(err){
@@ -59,11 +59,11 @@ function deleteFile(filePath: string): void{
   }
 }
 
-// 清除文件夹
-async function cleanFilder(filePath: string): void{
-  const list: string[] = await fileList(filePath);
+/* 清除文件夹 */
+async function cleanFilder(nodeModulesPath: string): Promise<void>{
+  const list: string[] = await fileList(nodeModulesPath);
   for(let i: number = 0, j: number = list.length; i < j; i++){
-    const pf: string = path.join(filePath, list[i]);
+    const pf: string = path.join(nodeModulesPath, list[i]);
     const stats: any = await isFile(pf);
     if(stats.isFile()){
       deleteFile(pf);
@@ -73,12 +73,16 @@ async function cleanFilder(filePath: string): void{
   }
 }
 
-function clean(filePath: string, _extArray: ?string[], _fileArray: ?string): void{
+function clean(nodeModulesPath: string, _extArray: ?string[], _fileArray: ?string): void{
   // 合并删除名单
-  if(_extArray) extArray = extArray.concat(_extArray);
-  if(_fileArray) fileArray = fileArray.concat(_fileArray);
+  if(_extArray){
+    extArray = extArray.concat(_extArray);
+  }
+  if(_fileArray){
+    fileArray = fileArray.concat(_fileArray);
+  }
 
-  cleanFilder(filePath);
+  cleanFilder(nodeModulesPath);
 }
 
 module.exports = clean;

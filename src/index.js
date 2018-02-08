@@ -3,6 +3,8 @@ const process = require('process');
 const path = require('path');
 const yargs = require('yargs');
 const clean = require('./clean');
+const { string2File, string2Ext } = require('./stringTo');
+const parseFileList = require('./parseFileList');
 
 /* 获取参数 */
 const argv: Object = yargs.options({
@@ -15,50 +17,72 @@ const argv: Object = yargs.options({
   ext: {
     alias: 'e',
     demand: false,
-    describe: 'The extension of the files that needs to be deleted, is segmented by ",". (需要删除的文件的扩展名，以“|”分割)',
+    describe: 'The extension of the files that needs to be deleted, is segmented by "|". (需要删除的文件的扩展名，以“|”分割)',
     type: 'string'
   },
   file: {
     alias: 'f',
     demand: false,
-    describe: 'The name of the files to delete, is segmented by ",". (需要删除的文件名，以“|”分割)',
+    describe: 'The name of the files to delete, is segmented by "|". (需要删除的文件名，以“|”分割)',
+    type: 'string'
+  },
+  filelist: {
+    alias: 'i',
+    demand: false,
+    describe: 'Need to delete files and extensions list of files. (需要删除的文件和扩展名的列表文件)',
     type: 'string'
   }
 }).argv;
 
+let pathFile: ?string = null;             // 文件夹地址
+let nodeModulesPath: ?string = null;      // node_modules文件夹地址
+let fileList: ?string = null;             // 需要删除的文件和扩展名的列表文件
+let extArray: string[] = [];              // 需要删除的扩展名数组
+let fileArray: string[] = [];             // 需要删除的文件数组
 
-let filePath: string = null;
-let extArray: ?string[] = null;
-let fileArray: ?string[] = null;
-
-/* 将字符串转化成数组、剔除空字符串、全部转换成小写 */
-function string2Array(str: string): string[]{
-  const str2: string[] = str.split(/\s*\|\s*/g);
-  const arr: string[] = [];
-  for(let i: number = str2.length - 1; i >= 0; i--){
-    const item: string = str2[i];
-    if(!/^\s*$/.test(item)){
-      arr.push(item.toLocaleLowerCase());
-    }
-  }
-  return arr;
-}
-
-// 文件夹路径;
+// 文件夹路径
 if(argv.path === undefined){
-  filePath = path.join(process.cwd(), 'node_modules');
+  pathFile = process.cwd();
 }else{
   if(/^\s*$/.test(argv.path)){
     throw new Error('You must enter the path of a folder. (你必须输入一个文件夹的路径)');
   }else{
-    filePath = path.join(argv.path, 'node_modules');
+    pathFile = argv.path;
+  }
+}
+nodeModulesPath = path.join(pathFile, 'node_modules');
+
+// filelist
+if(argv.filelist !== undefined){
+  fileList = argv.filelist;
+  if(!path.isAbsolute(argv.filelist)){
+    fileList = path.join(pathFile, argv.filelist);
   }
 }
 
-// 扩展名
-if(argv.ext !== undefined) extArray = string2Array(argv.ext);
+// 扩展名数组
+if(argv.ext !== undefined){
+  extArray = string2Ext(argv.ext);
+}
 
-// 文件
-if(argv.file !== undefined) fileArray = string2Array(argv.file);
+// 文件数组
+if(argv.file !== undefined){
+  fileArray = string2File(argv.file);
+}
 
-clean(filePath, extArray, fileArray);
+async function start(): Promise<void>{
+  // 解析filelist
+  if(fileList !== null){
+    const { file, ext }: {
+      file: string[],
+      ext: string[]
+    } = await parseFileList(fileList);
+
+    console.log(file, ext);
+
+    extArray = extArray.concat(ext);
+    fileArray = fileArray.concat(file);
+  }
+  clean(nodeModulesPath, extArray, fileArray);
+}
+start();

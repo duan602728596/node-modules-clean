@@ -29,7 +29,7 @@ $ node-modules-clean -p "path/to"
 
 The parameters of `--ext` or `-e`, add the extension files you need to remove the parameter "|" segmentation.
 ```
-$ node-modules-clean --ext ".ts | .less"
+$ node-modules-clean --ext "*.ts | *.less"
 ```
 
 The parameters of `--file` or `-f`, add the need to remove the file name, "|" segmentation parameters.
@@ -37,9 +37,21 @@ The parameters of `--file` or `-f`, add the need to remove the file name, "|" se
 $ node-modules-clean --file "a.js | b.js"
 ```
 
+The parameters of `--filelist` or `-i`, choose a clear file list.
+```
+$ node-modules-clean --filelist "clean.txt"
+```
+The list format is as follows
+```
+# comments
+*.ts        # clear the *.ts file
+test.js     # clear the test.js file
+```
+
 ## Parameter
 | command | effect |
 | ---     | ---    |
-| --path(-p) | Select a folder directory.                                                      |
-| --ext(-e)  | Add the extension files you need to remove the parameter "&#124;" segmentation. |
-| --file(-f) | Add the need to remove the file name, "&#124;" segmentation parameters.         |
+| --path(-p)     | Select a folder directory.                                                      |
+| --ext(-e)      | Add the extension files you need to remove the parameter "&#124;" segmentation. |
+| --file(-f)     | Add the need to remove the file name, "&#124;" segmentation parameters.         |
+| --filelist(-i) | Cleared list of files.                                                          |
