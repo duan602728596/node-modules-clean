@@ -1,6 +1,6 @@
 # node-modules-clean
 
-[中文文档](README-zh_CN.md)
+[中文文档](https://github.com/duan602728596/node-modules-clean/blob/master/README-zh_CN.md)
 
 ## Explain
 Clear the redundant files in the `node_modules` folder.   
